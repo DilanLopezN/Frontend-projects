@@ -1,4 +1,5 @@
 import { Play } from 'phosphor-react'
+import { useForm } from 'react-hook-form'
 import {
   HomeContainer,
   FormContainer,
@@ -9,15 +10,19 @@ import {
   InputMinutes
 } from './styles'
 export function Home() {
+  const { register, handleSubmit } = useForm()
+
+  function handleCreateNewCycle(data: any) {}
   return (
     <HomeContainer>
-      <form action="">
+      <form onSubmit={handleSubmit(handleCreateNewCycle)} action="">
         <FormContainer>
           <label htmlFor="task">Vou trabalhar em</label>
           <InputTask
             list="taskSuggestions"
             id="task"
             placeholder="de um nome a sua tarefa"
+            {...register('task')}
           />
 
           <datalist id="taskSuggestions">
@@ -35,6 +40,7 @@ export function Home() {
             type="number"
             id="minutesAmount"
             placeholder="00"
+            {...register('minutesAmount')}
           />
           <span>minutos .</span>
         </FormContainer>
