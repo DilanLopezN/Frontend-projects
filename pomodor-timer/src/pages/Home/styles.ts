@@ -27,6 +27,21 @@ export const FormContainer = styled.div`
   font-weight: bold;
   flex-wrap: wrap;
 `
+
+const BaseInput = styled.input`
+  background: transparent;
+  height: 2.5rem;
+  border: 0;
+  border-bottom: 2px solid ${props => props.theme['gray-500']};
+  font-weight: bold;
+  font-size: 1.125rem;
+  padding: 0 0.5rem;
+`
+
+export const InputTask = styled(BaseInput)``
+
+export const InputMinutes = styled(BaseInput)``
+
 export const CountContainer = styled.div`
   font-family: 'Roboto Mono', monospace;
   font-size: 10rem;
@@ -66,7 +81,7 @@ export const StartCountButton = styled.button`
 
   cursor: pointer;
 
-  background: ${props => props.theme['yellow-700']};
+  background: ${props => props.theme['green-500']};
   color: ${props => props.theme['gray-900']};
 
   &:disabled {
@@ -75,6 +90,6 @@ export const StartCountButton = styled.button`
   }
 
   &:not(:disabled):hover {
-    background: ${props => props.theme['yellow-500']};
+    background: ${props => props.theme['green-700']};
   }
 `
