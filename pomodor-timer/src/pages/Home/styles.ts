@@ -51,3 +51,30 @@ export const Separator = styled.div`
   display: flex;
   justify-content: center;
 `
+export const StartCountButton = styled.button`
+  width: 80%;
+  height: 44px;
+  border: 0;
+  border-radius: 8px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 0.5rem;
+  font-weight: bold;
+
+  cursor: pointer;
+
+  background: ${props => props.theme['yellow-700']};
+  color: ${props => props.theme['gray-900']};
+
+  &:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+
+  &:not(:disabled):hover {
+    background: ${props => props.theme['yellow-500']};
+  }
+`
