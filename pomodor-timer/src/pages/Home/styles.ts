@@ -36,11 +36,24 @@ const BaseInput = styled.input`
   font-weight: bold;
   font-size: 1.125rem;
   padding: 0 0.5rem;
+  color: ${props => props.theme['gray-100']};
+
+  &:focus {
+    box-shadow: none;
+    border-color: ${props => props.theme['yellow-700']};
+  }
+  &::placeholder {
+    color: ${props => props.theme['gray-500']};
+  }
 `
 
-export const InputTask = styled(BaseInput)``
+export const InputTask = styled(BaseInput)`
+  flex: 1;
+`
 
-export const InputMinutes = styled(BaseInput)``
+export const InputMinutes = styled(BaseInput)`
+  width: 4rem;
+`
 
 export const CountContainer = styled.div`
   font-family: 'Roboto Mono', monospace;
