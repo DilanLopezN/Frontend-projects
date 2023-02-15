@@ -1,4 +1,5 @@
 import { createContext, ReactNode, useState, useReducer } from 'react'
+import { ActionTypes, cyclesReducer } from '../reducers/cycles'
 interface Cycle {
   id: string
   task: string
@@ -25,50 +26,12 @@ interface CycleContextProviderProps {
   children: ReactNode
 }
 
-interface CyclesState {
-  cycles: Cycle[]
-  activeCycleId: string | null
-}
 export const CyclesContext = createContext({} as CyclesContextType)
 
 export function CyclesContextProvider({ children }: CycleContextProviderProps) {
   const [cyclesState, dispatch] = useReducer(
-    (state: CyclesState, action: any) => {
-      switch (action.type) {
-        case 'ADD_NEW_CYCLE':
-          return {
-            ...state,
-            cycles: [...state.cycles, action.payload.newCycle],
-            activeCycleId: action.payload.newCycle.id
-          }
-        case 'STOP_CYCLE':
-          return {
-            ...state,
-            cycles: state.cycles.map(cycle => {
-              if (cycle.id === state.activeCycleId) {
-                return { ...cycle, stopDate: new Date() }
-              } else {
-                return cycle
-              }
-            }),
-            activeCycleId: null
-          }
-        case 'CURRENT_CYCLE_FINISHED':
-          return {
-            ...state,
-            cycles: state.cycles.map(cycle => {
-              if (cycle.id === state.activeCycleId) {
-                return { ...cycle, finishDate: new Date() }
-              } else {
-                return cycle
-              }
-            }),
-            activeCycleId: null
-          }
-        default:
-          return state
-      }
-    },
+    cyclesReducer,
+
     {
       cycles: [],
       activeCycleId: null
@@ -87,7 +50,7 @@ export function CyclesContextProvider({ children }: CycleContextProviderProps) {
       startDate: new Date()
     }
     dispatch({
-      type: 'ADD_NEW_CYCLE',
+      type: ActionTypes.ADD_NEW_CYCLE,
       payload: {
         newCycle
       }
@@ -100,7 +63,7 @@ export function CyclesContextProvider({ children }: CycleContextProviderProps) {
 
   function stopCycle() {
     dispatch({
-      type: 'STOP_CYCLE',
+      type: ActionTypes.STOP_CYCLE,
       payload: {
         activeCycleId
       }
@@ -108,7 +71,7 @@ export function CyclesContextProvider({ children }: CycleContextProviderProps) {
   }
   function markCurrentCycleFinished() {
     dispatch({
-      type: 'CURRENT_CYCLE_FINISHED',
+      type: ActionTypes.CURRENT_CYCLE_FINISHED,
       payload: {
         activeCycleId
       }
