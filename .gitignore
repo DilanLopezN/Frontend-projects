@@ -7,7 +7,7 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-
+next-shop/.next
 
 node_modules
 dist
@@ -28,6 +28,7 @@ dist-ssr
 *.sln
 *.sw?
 /.next/
+.next
 /out/
 
 # production
