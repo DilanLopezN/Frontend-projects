@@ -31,6 +31,7 @@ interface Cycle {
   minutesAmount: number
   startDate: Date
   stopDate?: Date
+  finishDate?: Date
 }
 export function Home() {
   const [cycles, setCycles] = useState<Cycle[]>([])
@@ -60,8 +61,8 @@ export function Home() {
   }
 
   function handleStopCycle() {
-    setCycles(
-      cycles.map(cycle => {
+    setCycles(state =>
+      state.map(cycle => {
         if (cycle.id === activeCycleId) {
           return { ...cycle, stopDate: new Date() }
         } else {
@@ -72,27 +73,44 @@ export function Home() {
     setActiveCycleId(null)
   }
 
-  useEffect(() => {
-    let interval: number
-    if (activeCycle) {
-      interval = setInterval(() => {
-        setAmoutSecondesPassed(
-          differenceInSeconds(new Date(), activeCycle.startDate)
-        )
-      }, 1000)
-    }
-
-    return () => {
-      clearInterval(interval)
-    }
-  }, [activeCycle])
-
   const totalSeconds = activeCycle ? activeCycle.minutesAmount * 60 : 0
   const currentSeconds = activeCycle ? totalSeconds - amoutSecondsPassed : 0
   const minutesAmount = Math.floor(currentSeconds / 60)
   const secondsAmount = currentSeconds % 60
   const minutes = String(minutesAmount).padStart(2, '0')
   const seconds = String(secondsAmount).padStart(2, '0')
+
+  useEffect(() => {
+    let interval: number
+    if (activeCycle) {
+      interval = setInterval(() => {
+        const secondsDifference = differenceInSeconds(
+          new Date(),
+          activeCycle.startDate
+        )
+
+        if (secondsDifference >= totalSeconds) {
+          setCycles(state =>
+            state.map(cycle => {
+              if (cycle.id === activeCycleId) {
+                return { ...cycle, finishDate: new Date() }
+              } else {
+                return cycle
+              }
+            })
+          )
+          setAmoutSecondesPassed(totalSeconds)
+          clearInterval(interval)
+        } else {
+          setAmoutSecondesPassed(secondsDifference)
+        }
+      }, 1000)
+    }
+
+    return () => {
+      clearInterval(interval)
+    }
+  }, [activeCycle, totalSeconds])
 
   useEffect(() => {
     if (activeCycle) {
