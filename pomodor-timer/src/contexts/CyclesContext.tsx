@@ -1,10 +1,17 @@
-import { createContext, ReactNode, useState, useReducer } from 'react'
+import {
+  createContext,
+  ReactNode,
+  useState,
+  useReducer,
+  useEffect
+} from 'react'
 import { cyclesReducer } from '../reducers/cycles/cycles'
 import {
   addNewCycleAction,
   markCycleActionFinished,
   stopCycleAction
 } from '../reducers/cycles/actions'
+import { differenceInSeconds } from 'date-fns'
 
 export interface Cycle {
   id: string
@@ -41,12 +48,30 @@ export function CyclesContextProvider({ children }: CycleContextProviderProps) {
     {
       cycles: [],
       activeCycleId: null
+    },
+    () => {
+      const storedStateAsJson = localStorage.getItem(
+        '@pomodor-timer: cycles-state-1.0.0'
+      )
+      if (storedStateAsJson) {
+        return JSON.parse(storedStateAsJson)
+      }
     }
   )
 
-  const [amoutSecondsPassed, setAmoutSecondesPassed] = useState(0)
   const { cycles, activeCycleId } = cyclesState
   const activeCycle = cycles.find(cycle => cycle.id === activeCycleId)
+  const [amoutSecondsPassed, setAmoutSecondesPassed] = useState(() => {
+    if (activeCycle) {
+      return differenceInSeconds(new Date(), new Date(activeCycle.startDate))
+    }
+    return 0
+  })
+
+  useEffect(() => {
+    const stateJSON = JSON.stringify(cyclesState)
+    localStorage.setItem('@pomodor-timer: cycles-state-1.0.0', stateJSON)
+  }, [cyclesState])
 
   function createNewCycle(data: CreateCycleData) {
     const newCycle: Cycle = {
