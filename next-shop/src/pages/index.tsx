@@ -5,8 +5,10 @@ import 'keen-slider/keen-slider.min.css'
 import estampa1 from '../assets/1.png'
 import estampa2 from '../assets/2.png'
 import estampa3 from '../assets/3.png'
+import { stripe } from '@/lib/stripe'
+import { GetServerSideProps } from 'next'
 
-export default function Home() {
+export default function Home(props) {
   const [sliderRef] = useKeenSlider({
     slides: {
       perView: 2,
@@ -42,4 +44,15 @@ export default function Home() {
       </Product>
     </HomeContainer>
   )
+}
+export const getServerSideProps: GetServerSideProps = async () => {
+  const response = await stripe.products.list()
+
+  console.log(response.data)
+
+  return {
+    props: {
+      list: [1, 2, 3]
+    }
+  }
 }
