@@ -3,7 +3,7 @@ import Image from 'next/image'
 import { useKeenSlider } from 'keen-slider/react'
 import 'keen-slider/keen-slider.min.css'
 import { stripe } from '@/lib/stripe'
-import { GetServerSideProps, GetStaticProps } from 'next'
+import { GetStaticProps } from 'next'
 import Stripe from 'stripe'
 
 interface HomeProps {
@@ -55,7 +55,10 @@ export const getStaticProps: GetStaticProps = async () => {
       name: product.name,
       imageUrl: product.images[0],
       url: product.url,
-      price: price.unit_amount! / 100
+      price: new Intl.NumberFormat('pt-BR', {
+        style: 'currency',
+        currency: 'BRL'
+      }).format(price.unit_amount! / 100)
     }
   })
 
