@@ -2,9 +2,6 @@ import { HomeContainer, Product } from '@/styles/pages/home'
 import Image from 'next/image'
 import { useKeenSlider } from 'keen-slider/react'
 import 'keen-slider/keen-slider.min.css'
-import estampa1 from '../assets/1.png'
-import estampa2 from '../assets/2.png'
-import estampa3 from '../assets/3.png'
 import { stripe } from '@/lib/stripe'
 import { GetServerSideProps } from 'next'
 import Stripe from 'stripe'
@@ -29,7 +26,12 @@ export default function Home({ products }: HomeProps) {
       {products.map(product => {
         return (
           <Product key={product.id} className="keen-slider__slide">
-            <Image src={estampa1} width={520} height={480} alt="estampas" />
+            <Image
+              src={product.imageUrl}
+              width={520}
+              height={480}
+              alt="estampas"
+            />
 
             <footer>
               <strong>{product.name}</strong>
@@ -56,7 +58,6 @@ export const getServerSideProps: GetServerSideProps = async () => {
       price: price.unit_amount! / 100
     }
   })
-  console.log(response.data)
 
   return {
     props: {
