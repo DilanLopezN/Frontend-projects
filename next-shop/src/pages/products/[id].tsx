@@ -4,6 +4,7 @@ import {
   ProductContainer,
   ProductDetails
 } from '@/styles/pages/product'
+import axios from 'axios'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
@@ -15,9 +16,24 @@ interface ProductProps {
     imageUrl: string
     price: number
     description: string
+    defaultPriceId: string
   }
 }
 export default function Product({ product }: ProductProps) {
+  async function handleBuyProduct() {
+    try {
+      const response = await axios.post('/api/checkout', {
+        priceId: product.defaultPriceId
+      })
+
+      const { checkoutUrl } = response.data
+
+      window.location.href = checkoutUrl
+    } catch (error) {
+      alert('Falha ao direcionar para checkout')
+      console.error(error)
+    }
+  }
   const { isFallback } = useRouter()
 
   if (isFallback) {
@@ -71,7 +87,8 @@ export const getStaticProps: GetStaticProps<any, { id: string }> = async ({
           style: 'currency',
           currency: 'BRL'
         }).format(price.unit_amount! / 100),
-        description: product.description
+        description: product.description,
+        defaultPriceId: price.id
       }
     },
     revalidate: 60 * 60 * 2 // 2 horas
