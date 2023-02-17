@@ -1,3 +1,4 @@
+import { wrap } from 'module'
 import { styled } from '..'
 
 export const SucessContainer = styled('main', {
@@ -6,7 +7,7 @@ export const SucessContainer = styled('main', {
   alignItems: 'center',
   justifyContent: 'center',
   margin: '0 auto',
-  height: 540,
+  height: 640,
 
   h1: {
     fontSize: '1.5rem',
@@ -14,9 +15,12 @@ export const SucessContainer = styled('main', {
   },
 
   p: {
+    display: 'flex',
+    flexWrap: 'wrap',
     fontSize: '1.25rem',
     color: '$gray300',
     textAlign: 'center',
+    gap: '0.55rem',
     lineHeight: 1.4
   },
 
@@ -34,8 +38,9 @@ export const SucessContainer = styled('main', {
 })
 
 export const ImageContainer = styled('div', {
-  width: '100%',
-  height: 538,
+  marginBottom: '4rem',
+  width: 580,
+  height: 420,
   borderRadius: 8,
   padding: '0.25rem',
 
