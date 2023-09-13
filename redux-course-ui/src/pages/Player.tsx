@@ -1,7 +1,11 @@
 import { Header } from '../components/Header'
 import { VideoPlayer } from '../components/VideoPlayer'
 import { Module } from '../components/Module'
+import { useAppSelector } from '../store'
 export function Player() {
+  const modules = useAppSelector(state => {
+    return state.player.course.modules
+  })
   return (
     <div
       className="h-screen bg-zinc-950 text-zinc-50
@@ -20,8 +24,18 @@ export function Player() {
             scrollbar-thin scrollbar-track-zinc-900 scrollbar-thumb-zinc-700 divide-y-2 divide-zinc-900
             "
           >
-            <Module title="Fundamentos Redux" amoutOfLessons={12} moduleIndex={1} />
-            <Module title="Fundamentos Redux" amoutOfLessons={12} moduleIndex={1} />
+
+            {
+              modules.map((module, index) => (
+                <Module 
+                key={module.id}
+                title={module.title} 
+                amoutOfLessons={module.lessons.length}
+                 moduleIndex={index} />
+              ))
+            }
+           
+         
           </aside>
         </main>
       </div>
