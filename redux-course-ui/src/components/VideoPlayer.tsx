@@ -1,5 +1,4 @@
 import ReactPlayer from 'react-player'
-import { useAppSelector } from '../store'
 import { next, useCurrentLesson } from '../store/slices/Player'
 import { useDispatch } from 'react-redux'
 export function VideoPlayer() {
