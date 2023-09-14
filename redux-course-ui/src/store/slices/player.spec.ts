@@ -1,5 +1,5 @@
-import {describe, expect, it} from 'vitest'
-import { player as reducer, play, next, PlayerState  } from './player'
+import { describe, expect, it } from 'vitest'
+import { player as reducer, play, next, PlayerState } from "./player";
 
 const exampleState: PlayerState = {
   course: {
@@ -23,58 +23,44 @@ const exampleState: PlayerState = {
       },
     ],
   },
+  isLoading: false,
+  currentModuleIndex: 0,
   currentLessonIndex: 0,
-  currentModuleIndex: 0
 }
 
-describe('Player Slice', () => {
-  it('shoud be able to play', () => {
-    //const initialState = playerSlice.getInitialState()
-    const state = reducer(exampleState, play([1,2]))
+describe('player slice', () => {
+  it('should be able to play', () => {
+    const state = reducer(exampleState, play([1, 2]))
 
-   expect(state.currentModuleIndex).toEqual(1)
-   expect(state.currentLessonIndex).toEqual(2)
-
+    expect(state.currentModuleIndex).toEqual(1)
+    expect(state.currentLessonIndex).toEqual(2)
   })
 
-  it('shoud be able to play next video', () => {
-    
-   const state = reducer(exampleState, next())
+  it('should be able to play next video automatically', () => {
+    const state = reducer(exampleState, next())
 
-   expect(state.currentModuleIndex).toEqual(0)
-   expect(state.currentLessonIndex).toEqual(1)
-
+    expect(state.currentModuleIndex).toEqual(0)
+    expect(state.currentLessonIndex).toEqual(1)
   })
 
+  it('should be able to jump to the next module automatically', () => {
+    const state = reducer({
+      ...exampleState,
+      currentLessonIndex: 1
+    }, next())
 
-  it('shoud be able to jump next module', () => {
-    
-    const state = reducer(
-      {
-        ...exampleState,
-        currentLessonIndex: 1
-      }, next())
- 
     expect(state.currentModuleIndex).toEqual(1)
     expect(state.currentLessonIndex).toEqual(0)
- 
-   })
-   
-   it('shoud be able to jump next module or lesson if not exists', () => {
-    
-    const state = reducer(
-      {
-        ...exampleState,
-        currentLessonIndex: 1,
-        currentModuleIndex: 1
-      }, next())
- 
+  })
+
+  it('should not update the current module and lesson index if there is not next lesson available', () => {
+    const state = reducer({
+      ...exampleState,
+      currentModuleIndex: 1,
+      currentLessonIndex: 1
+    }, next())
+
     expect(state.currentModuleIndex).toEqual(1)
-    expect(state.currentLessonIndex).toEqual(0)
- 
-   })
-
-
-
-
-})
+    expect(state.currentLessonIndex).toEqual(1)
+  })
+});
