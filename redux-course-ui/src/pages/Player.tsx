@@ -2,23 +2,20 @@ import {useEffect} from 'react'
 import { Header } from '../components/Header'
 import { VideoPlayer } from '../components/VideoPlayer'
 import { Module } from '../components/Module'
-import { useAppSelector } from '../store'
-import { start, useCurrentLesson } from '../store/slices/player'
-import { api } from '../lib/api'
-import { useDispatch } from 'react-redux'
+import { useAppDispatch, useAppSelector } from '../store'
+import { loadCourse, useCurrentLesson } from '../store/slices/player'
+
 export function Player() {
   const modules = useAppSelector(state => {
     return state.player.course?.modules
   })
   const {currentLesson} = useCurrentLesson()
 
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
 
   useEffect(() => {
-    api.get('/courses/1').then(response => {
-    dispatch(start(response.data))
-    })
+    dispatch(loadCourse())
   }, [])
 
   useEffect(() => {
