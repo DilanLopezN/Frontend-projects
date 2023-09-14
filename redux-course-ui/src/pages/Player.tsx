@@ -3,15 +3,26 @@ import { Header } from '../components/Header'
 import { VideoPlayer } from '../components/VideoPlayer'
 import { Module } from '../components/Module'
 import { useAppSelector } from '../store'
-import { useCurrentLesson } from '../store/slices/Player'
+import { start, useCurrentLesson } from '../store/slices/player'
+import { api } from '../lib/api'
+import { useDispatch } from 'react-redux'
 export function Player() {
   const modules = useAppSelector(state => {
-    return state.player.course.modules
+    return state.player.course?.modules
   })
   const {currentLesson} = useCurrentLesson()
 
+  const dispatch = useDispatch()
+
+
   useEffect(() => {
-    document.title = `${currentLesson.title}`
+    api.get('/courses/1').then(response => {
+    dispatch(start(response.data))
+    })
+  }, [])
+
+  useEffect(() => {
+    if (currentLesson) document.title = `${currentLesson.title}`
   }, [currentLesson])
 
   return (
@@ -34,7 +45,7 @@ export function Player() {
           >
 
             {
-              modules.map((module, index) => (
+              modules && modules.map((module, index) => (
                 <Module 
                 key={module.id}
                 title={module.title} 
