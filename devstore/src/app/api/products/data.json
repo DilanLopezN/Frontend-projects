@@ -1,0 +1,32 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "title": "Iron Maiden Senjutsu",
+      "slug": "iron-maiden-senjutsu",
+      "price": 65,
+      "image": "/ironmaiden1.jpeg",
+      "description": "Camisa fabricada com 88% de algodão e 12% de poliéster.",
+      "featured": true
+    },
+    {
+      "id": 2,
+      "title": "Iron Maiden All Eddie",
+      "slug": "iron-maiden-alleddie",
+      "price": 45,
+      "image": "/ironmaiden2.jpeg",
+      "description": "Camisa fabricada com 88% de algodão e 12% de poliéster.",
+      "featured": true
+    },
+    {
+      "id": 3,
+      "title": "Iron Maiden Fear of the dark",
+      "slug": "iron-maiden-fear-of-the-dark",
+      "price": 45,
+      "image": "/ironmaiden3.png",
+      "description": "Camiseta fabricada com 100% de algodão.",
+      "featured": true
+    }
+
+  ]
+}
